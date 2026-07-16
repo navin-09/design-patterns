@@ -1,33 +1,31 @@
 from abc import ABC, abstractmethod
 from enum import Enum
-# interface.py
+
 class Notifier(ABC):
     @abstractmethod
-    def send(self, to, msg):
-        pass
+    def send(self, to, msg): ...
 
-# notifiers.py
 class EmailNotifier(Notifier):
-    def send(self,to, msg):
-        print(f"sending email ${to} with message ${msg}")
+    def send(self, to, msg):
+        print(f"sending email {to} with message {msg}")
 
 class SmsNotifier(Notifier):
-    def send(self,to, msg):
-        print(f"sending sms ${to} with message ${msg}")
+    def send(self, to, msg):
+        print(f"sending sms {to} with message {msg}")
 
 class Channel(Enum):
     EMAIL = "email"
-    SMS = "sms"
+    SMS   = "sms"
 
 class NotifierFactory:
-    _Registry = {Channel.EMAIL : EmailNotifier,Channel.SMS : SmsNotifier} 
-    def get(cls, channel:Channel) -> Notifier:
-        if not cls._Registry[channel]:
-            raise ValueError("channel not found please try again")
-        return cls._Registry[channel]
+    _Registry = {Channel.EMAIL: EmailNotifier, Channel.SMS: SmsNotifier}
 
+    def get(self, channel: Channel) -> Notifier:
+        notifier_cls = self._Registry.get(channel)
+        if notifier_cls is None:
+            raise ValueError("channel not found, please try again")
+        return notifier_cls()          # ← instantiate!
 
-
-# Client
 factory = NotifierFactory()
-factory.get(Channel.EMAIL).send("sandula.navin@gmail.com","Hi this simple factory")
+factory.get(Channel.EMAIL).send("sandula.navin@gmail.com", "Hi this is simple factory")
+# sending email sandula.navin@gmail.com with message Hi this simple factory

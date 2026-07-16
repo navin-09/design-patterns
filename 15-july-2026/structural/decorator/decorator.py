@@ -50,3 +50,7 @@ if __name__ == "__main__":
     alert(LoggingNotifierDecorator(RetryNotifierDecorator(EmailNotifier())), "+1234", "hi")  # [logging → retry → email → +1234] hi
     print("\n")
     alert(RetryNotifierDecorator(LoggingNotifierDecorator(EmailNotifier())), "+1234", "hi")  # [logging → retry → email → +1234] hi
+    print("\n")
+    alert(LoggingNotifierDecorator(RetryNotifierDecorator(SMSNotifier())), "+1234555", "hi")  # [logging → retry → email → +1234] hi
+    print("\n")
+    alert(RetryNotifierDecorator(LoggingNotifierDecorator(SMSNotifier())), "+12345555", "hi")  # [logging → retry → email → +1234] hi
